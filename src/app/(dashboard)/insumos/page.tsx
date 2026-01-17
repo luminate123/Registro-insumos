@@ -6,6 +6,7 @@ import { Plus, Search, Archive } from "lucide-react";
 import { CATEGORIAS, UnidadMedida, Insumo } from "@/lib/types";
 import { useUserRole } from "@/hooks/useUserRole";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function InsumosPage() {
   const { insumos, agregarInsumo } = useInsumos();
@@ -40,24 +41,29 @@ export default function InsumosPage() {
     e.preventDefault();
     if (!formData.nombre) return;
 
-    await agregarInsumo({
-      nombre: formData.nombre,
-      categoria: formData.categoria || "Otros",
-      unidad: (formData.unidad as UnidadMedida) || "UNIDAD",
-      stockMinimo: Number(formData.stockMinimo) || 0,
-      cantidadActual: Number(formData.cantidadActual) || 0,
-      descripcion: formData.descripcion || "",
-    } as Insumo);
+    try {
+      await agregarInsumo({
+        nombre: formData.nombre,
+        categoria: formData.categoria || "Otros",
+        unidad: (formData.unidad as UnidadMedida) || "UNIDAD",
+        stockMinimo: Number(formData.stockMinimo) || 0,
+        cantidadActual: Number(formData.cantidadActual) || 0,
+        descripcion: formData.descripcion || "",
+      } as Insumo);
 
-    setShowForm(false);
-    setFormData({
-      nombre: "",
-      categoria: CATEGORIAS[0],
-      unidad: "UNIDAD",
-      stockMinimo: 0,
-      cantidadActual: 0,
-      descripcion: ""
-    });
+      toast.success("Insumo registrado correctamente");
+      setShowForm(false);
+      setFormData({
+        nombre: "",
+        categoria: CATEGORIAS[0],
+        unidad: "UNIDAD",
+        stockMinimo: 0,
+        cantidadActual: 0,
+        descripcion: ""
+      });
+    } catch (error) {
+      toast.error("Error al registrar insumo");
+    }
   };
 
   if (loading || role !== 'ADMIN') {
