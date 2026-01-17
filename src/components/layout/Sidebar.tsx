@@ -48,7 +48,7 @@ export function Sidebar() {
       )}
 
       <aside className={clsx(
-        "fixed md:static inset-y-0 left-0 z-40 w-64 bg-white border-r h-screen shadow-sm flex flex-col transition-transform duration-300 ease-in-out md:translate-x-0",
+        "fixed md:static inset-y-0 left-0 z-40 w-64 bg-white border-r h-[100dvh] md:h-screen shadow-sm flex flex-col transition-transform duration-300 ease-in-out md:translate-x-0",
         isOpen ? "translate-x-0" : "-translate-x-full"
       )}>
         <div className="p-6 pt-16 md:pt-6">
@@ -56,7 +56,7 @@ export function Sidebar() {
           <p className="text-xs text-slate-500">Gestión de Insumos</p>
         </div>
       
-        <nav className="flex-1 px-4 space-y-2">
+        <nav className="flex-1 px-4 space-y-2 overflow-y-auto">
           {menuItems.filter(item => {
             if (!role) return false;
             if (role === 'ADMIN') return true;
